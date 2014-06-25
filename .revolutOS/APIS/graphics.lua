@@ -10,8 +10,8 @@
 build=1;
 
 write=function(_sText)
+	print(save)
 	if save then
-		print("Saving")
 		local x,y=term.getCursorPos()
 		for i=1,_sText:len() do
 			scr.tx[x+i-1][y]=_sText:sub(i,i);
@@ -33,7 +33,6 @@ local col=colors.black
 local tcol=colors.gray;
 local setTcol=function(c) term.setTextColor(c or tcol); tcol=c or tcol;end
 local setBcol=function(c) term.setBackgroundColor(c or col); col=c or col;end
-local line=function(x1,y1,x2,y2) p.drawLine(x1,y1,x2,y2,col); end
 local cursorPos=function(x,y) term.setCursorPos(x,y); end
 local round=function(num,idp) local mult=10^(idp or 0); if num>=0 then return math.floor(num*mult+0.5)/mult; else return math.ceil(num*mult-0.5)/mult end end
 local getHex=function(color) return string.format("%X",math.floor(math.log(color)/math.log(2))); end
@@ -52,6 +51,11 @@ paintFullScreen=function(color)
 		p.drawLine(1,y,sX,y,col);
 	end
 	return true;
+end
+
+line=function(x1,y1,x2,y2,color)
+	setBcol(color);
+	p.drawLine(x1,y1,x2,y2,col);
 end
 
 paintBox=function(x1,y1,x2,y2,color)
