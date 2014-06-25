@@ -1,3 +1,7 @@
+--Base API
+
+local tAPIsLoading={}
+
 extension=function(path)
 	if not path then
 		return nil;
@@ -12,16 +16,16 @@ extension=function(path)
 		if path:sub(#path)=='/' then
 			_path=path:sub(1,#path-1);
 		end
-		local extension=_path:gmatch('%.[0-9a-z]+$')();
-		if extension then
-			extension=extension:sub(2);
+		local ext=_path:gmatch('%.[0-9a-z]+$')();
+		if ext then
+			ext=ext:sub(2);
 		else
 			return '';
 		end
 		if addDot then
-			extension='.'..extension;
+			ext='.'..ext;
 		end
-		return extension:lower();
+		return ext:lower();
 	end
 end
 
@@ -33,31 +37,33 @@ removeExtension=function(path)
 	if ext==path then
 		return fs.getName(path);
 	end
-	return string.gsub(path,extension,''):sub(1,-2);
+	return string.gsub(path,ext,''):sub(1,-2);
 end
 
-function loadAPI(_sPath)
-	local sName=removeExtension(fs.getName(_sPath ));
-	if tAPIsLoading[sName]==true then
-		return false
+function loadAPI(path)
+	if not fs.exists(path) then
+		error("File does not exist",2);
 	end
-	tAPIsLoading[sName]=true;
-	local tEnv={isStartup=true};
-	setmetatable(tEnv,{__index=getfenv()});
-	local fnAPI,err=loadfile(_sPath);
-	if fnAPI then
-		setfenv(fnAPI,tEnv);
-		fnAPI();
-	else
-        tAPIsLoading[sName]=nil;
-		return false;
+	if fs.isDir(path) then
+		error("Cannot load directory",2);
 	end
-	local tAPI={};
-	for k,v in pairs(tEnv) do
-		tAPI[k]=v;
+	local name=fs.getName(path);
+	name=name:match("(%a+)%.?.-");
+	if _G[name] then
+		error("API "..name.." already loaded",2);
 	end
-	getfenv()[sName]=tAPI;
-	tAPIsLoading[sName]=nil;
+	local env=setmetatable({},{__index=_G});
+	local func,err=loadfile(path);
+	if not func then
+		error(err,0);
+	end
+	setfenv(func,env);
+	func();
+	local api={};
+	for k,v in pairs(env) do
+		api[k]=v;
+	end
+	_G[name]=api;
 	return true
 end
 

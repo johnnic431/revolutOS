@@ -9,23 +9,6 @@
 --So i can auto update this
 build=1;
 
-write=function(_sText)
-	print(save)
-	if save then
-		local x,y=term.getCursorPos()
-		for i=1,_sText:len() do
-			scr.tx[x+i-1][y]=_sText:sub(i,i);
-			scr.tc[x+i-1][y]=col;
-			scr.bg[x+i-1][y]=tcol;
-		end
-		term.write(_sText)
-	else
-		term.write(_sText)
-	end
-end
-
-scr={};
-save=true;
 local p=paintutils;
 local p=paintutils;
 local sX,sY=term.getSize();
@@ -37,13 +20,6 @@ local cursorPos=function(x,y) term.setCursorPos(x,y); end
 local round=function(num,idp) local mult=10^(idp or 0); if num>=0 then return math.floor(num*mult+0.5)/mult; else return math.ceil(num*mult-0.5)/mult end end
 local getHex=function(color) return string.format("%X",math.floor(math.log(color)/math.log(2))); end
 local getDecimal=function(hexRepresentation) return math.pow(2,tonumber(hexRepresentation,16)); end
-
-for x=1,sX do
-	scr[x]={};
-	for y=1,sY do
-		scr[x][y]={bg=col,tc=tcol,tx=""};
-	end
-end
 
 paintFullScreen=function(color)
 	setBcol(color);
@@ -61,8 +37,8 @@ end
 paintBox=function(x1,y1,x2,y2,color)
 	if x2<=x1 or y2<=y1 then return false; end
 	setBcol(color);
-	for y=y1,y2 do
-		p.drawLine(x1,y,x2,y,col);
+	for y=y1,y2-1 do
+		line(x1,y,x2,y,col);
 	end
 	return true;
 end
@@ -129,12 +105,8 @@ end
 
 writeTextCentered=function(x1,x2,y,text,tCol)
 	setTcol(tCol);
-	if #text>x2-x1 then return false; end
-	toshowlen=string.len(text);
-	toshowlen=(x2-x1)-toshowlen;
-	toshowlen=toshowlen/2;
-	m=round(toshowlen);
-	cursorPos(toshowlen+(sX-(x2-x1))+1,y);
+	if #text>x2-x1 then error("Text %(Length "..tostring(#text).."%)is longer than "..x2-x1); end
+	cursorPos(1+x1+((x2-x1)-#text)/2,y);
 	write(text);
 end
 
