@@ -62,5 +62,5 @@ function loadAPI(_sPath)
 end
 
 function forLoadString()
-	return 'os.loadAPI(apisPath.."loadAPI") _os.loadAPI=os.loadAPI os.loadAPI=loadAPI.loadAPI load=loadAPI.loadAPI';
+	return '_os.loadAPI=os.loadAPI os.loadAPI=loadAPI.loadAPI load=loadAPI.loadAPI';
 end
