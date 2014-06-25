@@ -60,3 +60,7 @@ function loadAPI(_sPath)
 	tAPIsLoading[sName]=nil;
 	return true
 end
+
+function forLoadString()
+	return 'os.loadAPI(apisPath.."loadAPI") _os.loadAPI=os.loadAPI os.loadAPI=loadAPI.loadAPI load=loadAPI.loadAPI';
+end
