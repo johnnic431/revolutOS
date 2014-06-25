@@ -1,0 +1,62 @@
+extension=function(path)
+	if not path then
+		return nil;
+	elseif not string.find(fs.getName(path),'%.') then
+		if not addDot then
+			return fs.getName(path);
+		else
+			return '';
+		end
+	else
+		local _path=path;
+		if path:sub(#path)=='/' then
+			_path=path:sub(1,#path-1);
+		end
+		local extension=_path:gmatch('%.[0-9a-z]+$')();
+		if extension then
+			extension=extension:sub(2);
+		else
+			return '';
+		end
+		if addDot then
+			extension='.'..extension;
+		end
+		return extension:lower();
+	end
+end
+
+removeExtension=function(path)
+	if path:sub(1,1)=='.' then
+		return path;
+	end
+	local ext=extension(path);
+	if ext==path then
+		return fs.getName(path);
+	end
+	return string.gsub(path,extension,''):sub(1,-2);
+end
+
+function loadAPI(_sPath)
+	local sName=removeExtension(fs.getName(_sPath ));
+	if tAPIsLoading[sName]==true then
+		return false
+	end
+	tAPIsLoading[sName]=true;
+	local tEnv={isStartup=true};
+	setmetatable(tEnv,{__index=getfenv()});
+	local fnAPI,err=loadfile(_sPath);
+	if fnAPI then
+		setfenv(fnAPI,tEnv);
+		fnAPI();
+	else
+        tAPIsLoading[sName]=nil;
+		return false;
+	end
+	local tAPI={};
+	for k,v in pairs(tEnv) do
+		tAPI[k]=v;
+	end
+	getfenv()[sName]=tAPI;
+	tAPIsLoading[sName]=nil;
+	return true
+end
