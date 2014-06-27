@@ -13,11 +13,11 @@ function init(self)
 	new={};
 	new.info={x=0,y=0,sizeX=0,sizeY=0,bCol=0,tCol=0,text="",visible=false};
 	os.loadAPI(apisPath.."loadAPI")
-	loadstring(loadAPI.forLoadString());
+	load=loadAPI.loadAPI
 	local env=getfenv();
 	for k,v in pairs(apisNeeded) do
 		if not env[v] then
-			if not os.loadAPI(apisPath..v..".lua") then
+			if not load(apisPath..v..".lua") then
 				error("Unable to load required API "..v);
 			end
 		end
