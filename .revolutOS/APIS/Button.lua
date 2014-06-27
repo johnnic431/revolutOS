@@ -1,15 +1,8 @@
 --Button API for revolutOS
 
 --Auto-updating
-build=1;
-
-info={
-	x=0,y=0,sizeX=0,sizeY=0,bCol=0,tCol=0,text="",visible=false;
-}
-local x,y,sizeX,sizeY;
-local bCol,tCol;
-local text;
-local visible=false;
+version=0;
+build=2;
 
 local apisPath="";
 local apisNeeded={
@@ -17,6 +10,8 @@ local apisNeeded={
 }
 
 function init(self)
+	new={};
+	new.info={x=0,y=0,sizeX=0,sizeY=0,bCol=0,tCol=0,text="",visible=false};
 	os.loadAPI(apisPath.."loadAPI")
 	loadstring(loadAPI.forLoadString());
 	local env=getfenv();
@@ -27,14 +22,14 @@ function init(self)
 			end
 		end
 	end
-	local copy={};
 	for k,v in pairs(self) do
 		if k~="init" then
-			copy[k]=v;
+			new[k]=v;
 		end
 	end
-	return setmetatable(copy,getmetatable(self));
+	return setmetatable(new,self);
 end
+
 
 function setSize(self,nX,nY)
 	self.info.sizeX=nX;
