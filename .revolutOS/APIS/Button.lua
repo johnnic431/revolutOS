@@ -1,7 +1,7 @@
 --Button API for revolutOS
 
 --Auto-updating
-version=0.1;
+version=0;
 build=2;
 
 local apisPath="";
@@ -9,14 +9,9 @@ local apisNeeded={
 	"Graphics",
 }
 
-function init(self,inf)
+function init(self)
 	new={};
-	new.info={x=0,y=0,sizeX=0,sizeY=0,bCol=0,tCol=0,text="",visible=false,onClick=function() end};
-	for k,v in pairs(inf) do
-		if new.info[k] then
-			new.info[k]=v;
-		end
-	end
+	new.info={x=0,y=0,sizeX=0,sizeY=0,bCol=0,tCol=0,text="",visible=false};
 	os.loadAPI(apisPath.."loadAPI")
 	load=loadAPI.loadAPI
 	local env=getfenv();
@@ -77,20 +72,6 @@ end
 function setVisible(self,bool)
 	self.info.visible=bool;
 	return self;
-end
-
-function getInfo(self)
-	return self.info;
-end
-
-function clickAt(self,x,y)
-	if x>=self.info.x and x<= self.info.x+self.info.sizeX-1 and y>=self.info.y and y<= self.info.y+self.info.sizeY-1 then
-		self.info.onClick();
-	end
-end
-
-function setOnClick(self,oncl)
-	self.info.onClick=oncl;
 end
 
 function draw(self)
