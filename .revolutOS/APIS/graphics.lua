@@ -111,11 +111,9 @@ writeTextCentered=function(x1,x2,y,text,tCol)
 end
 
 clear=function()
-	save=false;
 	oCol=col;
 	paintFullScreen(colors.black);
 	setBcol(oCol);
-	save=true;
 end
 
 restore=function()
