@@ -85,12 +85,16 @@ end
 
 function clickAt(self,x,y)
 	if x>=self.info.x and x<= self.info.x+self.info.sizeX-1 and y>=self.info.y and y<= self.info.y+self.info.sizeY-1 then
-		self.info.onClick();
+		return true;
 	end
 end
 
 function setOnClick(self,oncl)
 	self.info.onClick=oncl;
+end
+
+function onClick(self)
+	self.info.onClick();
 end
 
 function draw(self)
