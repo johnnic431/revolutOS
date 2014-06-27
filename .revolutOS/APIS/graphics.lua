@@ -7,7 +7,7 @@
 ]]
 
 --So i can auto update this
-version=0;
+version=0.1;
 build=3;
 
 local p=paintutils;
