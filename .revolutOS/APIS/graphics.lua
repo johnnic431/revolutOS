@@ -7,9 +7,9 @@
 ]]
 
 --So i can auto update this
-build=1;
+version=0;
+build=3;
 
-local p=paintutils;
 local p=paintutils;
 local sX,sY=term.getSize();
 local col=colors.black
