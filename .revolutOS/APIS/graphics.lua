@@ -109,22 +109,3 @@ writeTextCentered=function(x1,x2,y,text,tCol)
 	cursorPos(1+x1+((x2-x1)-#text)/2,y);
 	write(text);
 end
-
-clear=function()
-	oCol=col;
-	paintFullScreen(colors.black);
-	setBcol(oCol);
-end
-
-restore=function()
-	for x=1,sX do
-		for y=1,sY do
-			if scr[x][y][bg] then
-				p.drawPixel(x,y,getDecimal(scr[x][y][bg]));
-			end
-			cursorPos(x,y);
-			setTcol(scr[x][y][tc]);
-			write(scr[x][y][tx]);
-		end
-	end
-end
