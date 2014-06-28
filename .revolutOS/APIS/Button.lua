@@ -12,6 +12,7 @@ local apisNeeded={
 function init(self,inf)
 	new={};
 	new.info={x=0,y=0,sizeX=0,sizeY=0,bCol=0,tCol=0,text="",visible=false,onClick=function() end};
+	inf=inf or {};
 	for k,v in pairs(inf) do
 		if new.info[k] then
 			new.info[k]=v;
@@ -84,8 +85,8 @@ function getInfo(self)
 end
 
 function clickAt(self,x,y)
-	if x>=self.info.x and x<= self.info.x+self.info.sizeX-1 and y>=self.info.y and y<= self.info.y+self.info.sizeY-1 then
-		return true;
+	if x>=self.info.x and x<= self.info.x+self.info.sizeX-1 and y>=self.info.y and y<= self.info.y+self.info.sizeY-1 and self.info.visible then
+		self.info.onClick();
 	end
 end
 
