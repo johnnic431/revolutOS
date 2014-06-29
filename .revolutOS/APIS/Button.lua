@@ -9,7 +9,7 @@ local apisNeeded={
 	"Graphics",
 }
 
-function init(self,inf)
+function init(this,inf)
 	new={};
 	new.info={x=0,y=0,sizeX=0,sizeY=0,bCol=0,tCol=0,text="",visible=false,onClick=function() end};
 	inf=inf or {};
@@ -28,85 +28,85 @@ function init(self,inf)
 			end
 		end
 	end
-	for k,v in pairs(self) do
+	for k,v in pairs(this) do
 		if k~="init" then
 			new[k]=v;
 		end
 	end
-	return setmetatable(new,self);
+	return setmetatable(new,this);
 end
 
 
-function setSize(self,nX,nY)
-	self.info.sizeX=nX;
-	self.info.sizeY=nY;
-	return self;
+function setSize(this,nX,nY)
+	this.info.sizeX=nX;
+	this.info.sizeY=nY;
+	return this;
 end
 
-function setLoc(self,nX,nY)
-	self.info.x=nX;
-	self.info.y=nY;
-	return self;
+function setLoc(this,nX,nY)
+	this.info.x=nX;
+	this.info.y=nY;
+	return this;
 end
 
-function setPos(self,nX,nY)
-	self.info.x=nX;
-	self.info.y=nY;
-	return self;
+function setPos(this,nX,nY)
+	this.info.x=nX;
+	this.info.y=nY;
+	return this;
 end
 
-function setBackColor(self,col)
-	self.info.bCol=col;
-	return self;
+function setBackColor(this,col)
+	this.info.bCol=col;
+	return this;
 end
 
-function setBackgroundColor(self,col)
-	self.info.bCol=col;
-	return self;
+function setBackgroundColor(this,col)
+	this.info.bCol=col;
+	return this;
 end
 
-function setTextColor(self,col)
-	self.info.tCol=col;
-	return self;
+function setTextColor(this,col)
+	this.info.tCol=col;
+	return this;
 end
 
-function setText(self,tx)
-	self.info.text=tx;
-	return self;
+function setText(this,tx)
+	this.info.text=tx;
+	return this;
 end
 
-function setVisible(self,bool)
-	self.info.visible=bool;
-	return self;
+function setVisible(this,bool)
+	this.info.visible=bool;
+	return this;
 end
 
-function getInfo(self)
-	return self.info;
+function getInfo(this)
+	return this.info;
 end
 
-function clickAt(self,x,y)
-	if x>=self.info.x and x<= self.info.x+self.info.sizeX-1 and y>=self.info.y and y<= self.info.y+self.info.sizeY-1 and self.info.visible then
-		self.info.onClick();
+function clickAt(this,x,y)
+	if x>=this.info.x and x<= this.info.x+this.info.sizeX-1 and y>=this.info.y and y<= this.info.y+this.info.sizeY-1 and this.info.visible then
+		this.info.onClick();
 	end
 end
 
-function setOnClick(self,oncl)
-	self.info.onClick=oncl;
+function setOnClick(this,oncl)
+	this.info.onClick=oncl;
 end
 
-function onClick(self)
-	self.info.onClick();
+function onClick(this)
+	this.info.onClick();
 end
 
-function draw(self)
-	if self.info.visible then
-		tX=self.info.x;
-		tY=self.info.y;
-		tX2=self.info.x+self.info.sizeX-1;
-		tY2=self.info.y+self.info.sizeY;
-		ok,err=pcall(Graphics.paintBox,tX,tY,tX2,tY2,self.info.bCol or colors.black);
+function draw(this)
+	if this.info.visible then
+		tX=this.info.x;
+		tY=this.info.y;
+		tX2=this.info.x+this.info.sizeX-1;
+		tY2=this.info.y+this.info.sizeY;
+		ok,err=pcall(Graphics.paintBox,tX,tY,tX2,tY2,this.info.bCol or colors.black);
 		if not ok then print(err); return false; end
-		ok,err=pcall(Graphics.writeTextCentered,tX,tX2,tY+(self.info.sizeY/2),self.info.text or "",self.info.tCol or colors.white);
+		ok,err=pcall(Graphics.writeTextCentered,tX,tX2,tY+(this.info.sizeY/2),this.info.text or "",this.info.tCol or colors.white);
 		if not ok then print(err); return false; end
 	end
 	return true;

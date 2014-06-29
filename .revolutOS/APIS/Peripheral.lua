@@ -50,9 +50,8 @@ function getPeripheral(periph)
 end
 
 function call(t,...)
-	if not hasPeripheral(t) then return false; end
+	if not hasPeripheral(t) then return nil; end
 	local args={...};
 	local p=getPeripheral(t);
-	peripheral.call(p.side,unpack(args));
-	return true;
+	return peripheral.call(p.side,unpack(args));
 end
