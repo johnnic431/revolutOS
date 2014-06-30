@@ -1,6 +1,7 @@
 --Base API
 
-local tAPIsLoading={}
+local tAPIsLoading={};
+apiPath="";
 
 extension=function(path)
 	if not path then
