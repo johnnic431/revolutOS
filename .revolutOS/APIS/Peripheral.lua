@@ -32,7 +32,7 @@ function getPeripheralSide(periph)
 end
 
 function hasPeripheral(periph)
-	for t,y in pairs(getPeripherals()) do
+	for t,v in pairs(getPeripherals()) do
 		if v.name==periph then
 			return true;
 		elseif periph=="modem" then
