@@ -4,7 +4,6 @@
 version=0.1;
 build=2;
 
-local apisPath="";
 local apisNeeded={
 	"Graphics",
 }
@@ -20,6 +19,7 @@ function init(this,inf)
 	end
 	os.loadAPI(apisPath.."loadAPI");
 	load=loadAPI.loadAPI;
+	apisPath=loadAPI.apiPath
 	local env=getfenv();
 	for k,v in pairs(apisNeeded) do
 		if not env[v] then
