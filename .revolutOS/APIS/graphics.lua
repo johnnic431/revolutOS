@@ -88,9 +88,22 @@ paintNamedRightPanel=function(width,depth,name,color,topColor,textColor)
 	writeTextCentered(sX-width,sX,1,name);
 	return true;
 end
+
 writeTextCentered=function(x1,x2,y,text,tCol)
 	setTcol(tCol);
 	if #text>x2-x1 then error("Text %(Length "..tostring(#text).."%)is longer than "..x2-x1); end
 	cursorPos(1+x1+((x2-x1)-#text)/2,y);
 	write(text);
+end
+
+function paintImage(tImage,xPos,yPos)
+	for y=1,#tImage do
+		local tLine=tImage[y];
+		for x=1,#tLine do
+			if tLine[x]>0 then
+				term.setBackgroundColor(tLine[x]);
+				drawPixelInternal(x+xPos-1,y+yPos-1);
+			end
+		end
+	end
 end
