@@ -88,21 +88,6 @@ paintNamedRightPanel=function(width,depth,name,color,topColor,textColor)
 	writeTextCentered(sX-width,sX,1,name);
 	return true;
 end
-
-paintSlidingLine=function(x,y,length,timea,color)
-	setBcol(color);
-	c=function()
-		l=length/timea;
-		for i=1,timea do
-			line(x,y,x+(l*i),y);
-			sleep(0.05);
-		end
-	end
-	l=coroutine.create(c);
-	coroutine.resume(l);
-	return true;
-end
-
 writeTextCentered=function(x1,x2,y,text,tCol)
 	setTcol(tCol);
 	if #text>x2-x1 then error("Text %(Length "..tostring(#text).."%)is longer than "..x2-x1); end
