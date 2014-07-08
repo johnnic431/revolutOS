@@ -17,9 +17,8 @@ function init(this,inf)
 			new.info[k]=v;
 		end
 	end
-	os.loadAPI(apisPath.."loadAPI");
+	os.loadAPI("loadAPI");
 	load=loadAPI.loadAPI;
-	apisPath=loadAPI.apiPath
 	local env=getfenv();
 	for k,v in pairs(apisNeeded) do
 		if not env[v] then
