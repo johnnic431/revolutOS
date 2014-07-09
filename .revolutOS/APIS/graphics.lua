@@ -1,11 +1,5 @@
 --revolutOS graphics library
 
---[[
-	functions to add:
-	paintSlidingBox
-	paintSlidingText
-]]
-
 --So i can auto update this
 version=0;
 build=3;
