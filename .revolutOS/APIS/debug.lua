@@ -63,6 +63,12 @@ rawset(_G,'loadfile',function( _sFile )
 		file.close()
 		return func, err
 	end
+	local file = fs.open( _sFile..".lua", "r" )
+	if file then
+		local func, err = loadstring( file.readAll(),_sFile)
+		file.close()
+		return func, err
+	end
 	return nil, "File not found"
 end)
 local traceback=function(level,terr)
@@ -132,10 +138,12 @@ local function format_traceback(terr)
 		if fs.exists(name) then
 			name,dir,path=fs.getName(name),name:match('^(.*)/') or '/',name
 			name=name..' ('..(dir or 'unknown')..')'
-		elseif false then
-			--shell has input string; modify to behave as file?
+			table.insert(ts,name)
+		elseif fs.exists(name..".lua") then
+			name,dir,path=fs.getName(name..".lua"),name:match('^(.*)/') or '/',name
+			name=name..' ('..(dir or 'unknown')..')'
+			table.insert(ts,name..".lua")
 		end
-		table.insert(ts,name)
 		for j,line in ipairs(get_lines(v)) do
 			table.insert(ts,' line '..(line.n or '(no line)')..', *'..(#line))
 			local n=line.n and tonumber(line.n) or 1
