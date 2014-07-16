@@ -4,7 +4,7 @@ version=0.1;
 build=1;
 
 apisPath="";
-apisNeeded={"Peripheral"};
+apisNeeded={"Peripheral","Logger"};
 local modem;
 local isInit=false;
 local notInit="The function Wireless.init() was not yet called. It must be called to use the Wireless API.";
@@ -29,6 +29,7 @@ end
 
 function open(channel)
 	if not isInit then error(notInit) end
+	Logger.log("Opening channel "..tostring(channel));
 	modem.open(channel);
 end
 
@@ -45,6 +46,7 @@ end
 function send(channel,rChannel,message,mID)
 	if not isInit then error(notInit) end
 	modem.transmit(channel,rChannel,textutils.serialize({content=message,senderID=os.getComputerID(),messageID=mID or "revolutOS:wirelessAPI"}));
+	Logger.log("Sent wireless message with content "..textutils.serialize({content=message,senderID=os.getComputerID(),messageID=mID or "revolutOS:wirelessAPI"}).." on channel "..tostring(channel));
 	return true;
 end
 
@@ -57,8 +59,9 @@ end
 function waitForMessage(channel)
 	if not isInit then error(notInit) end
 	if not isOpen(channel) then open(channel); end
-	modem.open(channel)
+	Logger.log("Waiting for message on channel "..tostring(channel));
 	e={os.pullEvent("modem_message")};
+	Logger.log("Received wireless message")
 	e[5]=textutils.unserialize(e[5]);
 	return e;
 end
