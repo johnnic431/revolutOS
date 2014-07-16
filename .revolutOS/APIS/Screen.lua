@@ -41,9 +41,9 @@ function addChild(self,child) --Child is a table with function 'draw' and string
 end
 
 function removeChild(self,name)
-	for t,child in pairs(self.components) do
-		if child.name==name then
-			self.components[child]=nil;
+	for i=1,#self.components do
+		if self.components[i].name==name then
+			self.components[i]=nil;
 		end
 	end
 end
