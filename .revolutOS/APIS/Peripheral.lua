@@ -32,6 +32,7 @@ function getPeripheralSide(periph)
 end
 
 function hasPeripheral(periph)
+	Logger.log("Checking for peripheral "..periph);
 	for t,v in pairs(getPeripherals()) do
 		if v.name==periph then
 			return true;

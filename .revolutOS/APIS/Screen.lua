@@ -8,12 +8,8 @@ local apisNeeded={
 }
 
 function init(this)
+	Logger.log("Initiailzing new screen...");
 	new={};
-	sX,sY=term.getSize();
-	new.sx=sX;
-	new.sy=sY-2;
-	new.x=1;
-	new.y=3;
 	new.components={};
 	os.loadAPI("loadAPI");
 	load=loadAPI.loadAPI;
@@ -41,6 +37,7 @@ function addChild(self,child) --Child is a table with function 'draw' and string
 end
 
 function removeChild(self,name)
+	Logger.log("Removing child "..name);
 	for i=1,#self.components do
 		if self.components[i].name==name then
 			self.components[i]=nil;
@@ -49,7 +46,9 @@ function removeChild(self,name)
 end
 
 function draw(self)
+	Logger.log("Redrawing...");
 	for t,child in pairs(self.components) do
 		child.draw();
 	end
+	Logger.log("Done with redraw.");
 end

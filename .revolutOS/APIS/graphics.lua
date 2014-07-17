@@ -11,6 +11,7 @@ local tcol=colors.gray;
 local setTcol=function(c) term.setTextColor(c or tcol); tcol=c or tcol;end
 local setBcol=function(c) term.setBackgroundColor(c or col); col=c or col;end
 local cursorPos=function(x,y) term.setCursorPos(x,y); end
+local drawPixelInternal=function(x,y) term.setCursorPos(x,y); term.write(" "); end
 local round=function(num,idp) local mult=10^(idp or 0); if num>=0 then return math.floor(num*mult+0.5)/mult; else return math.ceil(num*mult-0.5)/mult end end
 local getHex=function(color) return string.format("%X",math.floor(math.log(color)/math.log(2))); end
 local getDecimal=function(hexRepresentation) return math.pow(2,tonumber(hexRepresentation,16)); end
