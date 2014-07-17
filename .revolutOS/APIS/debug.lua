@@ -1,53 +1,53 @@
 local debug={}
 local error=_G._error or _G.error
- 
+	
 local function wrap(text, limit) --from Kingdaroo
-        local lines = {''}
-        for word, space in text:gmatch('(%S+)(%s*)') do
-                local temp = lines[#lines] .. word .. space:gsub('\n','')
-                if #temp > limit then
-                        table.insert(lines, '')
-                end
-                if space:find('\n') then
-                        lines[#lines] = lines[#lines] .. word
-                       
-                        space = space:gsub('\n', function()
-                                table.insert(lines, '')
-                                return ''
-                        end)
-                else
-                        lines[#lines] = lines[#lines] .. word .. space
-                end
-        end
-        return lines
+	local lines = {''}
+	for word, space in text:gmatch('(%S+)(%s*)') do
+		local temp = lines[#lines] .. word .. space:gsub('\n','')
+		if #temp > limit then
+			table.insert(lines, '')
+		end
+		if space:find('\n') then
+			lines[#lines] = lines[#lines] .. word
+		       
+			space = space:gsub('\n', function()
+				table.insert(lines, '')
+				return ''
+			end)
+		else
+			lines[#lines] = lines[#lines] .. word .. space
+		end
+	end
+	return lines
 end
  
 function debug.step_print(s,_term)
-        local term=_term or term
-        local x,y=term.getSize()
-        y=y-1
-        local t=wrap(s,x)
-        local r=#t%y
-        local n=(#t-r)/y
-        for i=0,n-1 do
-                if i~=0 then write'\n' end
-                write(table.concat(t,'\n',i*y+1,(i+1)*y))
-                write('\nPress any key to continue')
-                os.pullEvent('key')
-        end
-        write('\n')
-        write(table.concat(t,'\n',n*y+1,n*y+r))
-        write('\n')
+	local term=_term or term
+	local x,y=term.getSize()
+	y=y-1
+	local t=wrap(s,x)
+	local r=#t%y
+	local n=(#t-r)/y
+	for i=0,n-1 do
+		if i~=0 then write'\n' end
+		write(table.concat(t,'\n',i*y+1,(i+1)*y))
+		write('\nPress any key to continue')
+		os.pullEvent('key')
+	end
+	write('\n')
+	write(table.concat(t,'\n',n*y+1,n*y+r))
+	write('\n')
 end
  
 function debug.printError( ... )
-        if term.isColour() then
-                term.setTextColour( colours.red )
-        end
-        local t={...}
-        for i=1,#t do t[i]=tostring(t[i]) end
-        debug.step_print(table.concat(t,''),term)
-        term.setTextColour( colours.white )
+	if term.isColour() then
+		term.setTextColour( colours.red )
+	end
+	local t={...}
+	for i=1,#t do t[i]=tostring(t[i]) end
+	debug.step_print(table.concat(t,''),term)
+	term.setTextColour( colours.white )
 end
  
 --debug.traceback
@@ -88,8 +88,8 @@ local function classify(t,f)
     local fi,r=f(v)
     if fi~=nil then
       if c==nil or c.n~=fi then
-        table.insert(bins,c)
-        c={n=fi}
+	table.insert(bins,c)
+	c={n=fi}
       end
       table.insert(c,r)
     end
@@ -140,7 +140,7 @@ local function format_traceback(terr)
       table.insert(ts,' line '..(line.n or '(no line)')..', *'..(#line))
       local n=line.n and tonumber(line.n) or 1
       if path and n then
-        put_lines(path,1,ts,n)
+	put_lines(path,1,ts,n)
       end
     end
   end
@@ -156,16 +156,16 @@ function debug.traceback(msg,level)
 end
  
 function debug.printTraceback(msg,level)
-        debug.printError(debug.traceback(msg,(level or 0)+1))
+	debug.printError(debug.traceback(msg,(level or 0)+1))
 end
  
 end
  
  
 function debug.override()
-        rawset(_G,'_error',error)
-        rawset(_G,'error',debug.traceback)
-        rawset(_G,'printError',debug.printError)
+	rawset(_G,'_error',error)
+	rawset(_G,'error',debug.traceback)
+	rawset(_G,'printError',debug.printError)
 end
  
  
