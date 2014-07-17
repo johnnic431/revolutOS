@@ -10,6 +10,7 @@ local isInit=false;
 local notInit="The function Wireless.init() was not yet called. It must be called to use the Wireless API.";
 
 function init()
+	Logger.log("Wireless initializing...");
 	os.loadAPI(apisPath.."loadAPI");
 	load=loadAPI.loadAPI;
 	apisPath=loadAPI.apiPath
@@ -21,7 +22,7 @@ function init()
 			end
 		end
 	end
-	if not Peripheral.hasPeripheral("wireless_modem") then error("A wireless modem is required to use the Wireless API."); end
+	if not Peripheral.hasPeripheral("wireless_modem") then Logger.log("No wireless modem found"); error("A wireless modem is required to use the Wireless API."); end
 	modem=Peripheral.getPeripheral("wireless_modem");
 	isInit=true;
 	return true;
@@ -53,6 +54,7 @@ end
 function sendNormal(channel,rChannel,message)
 	if not isInit then error(notInit) end
 	modem.transmit(channel,rChannel,message);
+	Logger.log("Sent plain message with message "..tostring(message));
 	return true;
 end
 
@@ -63,5 +65,5 @@ function waitForMessage(channel)
 	e={os.pullEvent("modem_message")};
 	Logger.log("Received wireless message")
 	e[5]=textutils.unserialize(e[5]);
-	return e;
+	return e[5];
 end
