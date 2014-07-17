@@ -8,7 +8,7 @@ local apisNeeded={
 }
 
 function init(this)
-	Logger.log("Initiailzing new screen...");
+	Logger.log("Initializing new screen...");
 	new={};
 	new.components={};
 	os.loadAPI("loadAPI");
