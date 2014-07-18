@@ -9,21 +9,21 @@ ln="\n";
 fs.makeDir(".revolutOS");
 
 new=function()
-	sTime=os.time();
+	sTime=os.time()+(os.day()*24);
 	f=fs.open(file,"w");
 	f.write("File beginning at "..tostring(sTime)..ln);
 	f.close();
 end
 
 log=function(message)
-	nTime=os.time();
+	nTime=os.time()+(os.day()*24);
 	f=fs.open(file,"a");
 	f.write("["..nTime-sTime.."] "..message..ln);
 	f.close();
 end
 
 e=function(message)
-	nTime=os.time();
+	nTime=os.time()+(os.day()*24);
 	f=fs.open(file,"a");
 	f.write("\n\nBEGIN ERROR REPORT\n\n");
 	f.write("["..nTime-sTime.."] "..message..ln);
