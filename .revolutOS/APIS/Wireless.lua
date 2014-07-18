@@ -62,8 +62,12 @@ function waitForMessage(channel)
 	if not isInit then error(notInit) end
 	if not isOpen(channel) then open(channel); end
 	Logger.log("Waiting for message on channel "..tostring(channel));
-	e={os.pullEvent("modem_message")};
-	Logger.log("Received wireless message")
-	e[5]=textutils.unserialize(e[5]);
-	return e[5];
+	while true do
+		e={os.pullEvent("modem_message")};
+		if e[3]==channel then
+			Logger.log("Received wireless message with content "..e[5])
+			e[5]=textutils.unserialize(e[5]);
+			return e[5];
+		end
+	end
 end
