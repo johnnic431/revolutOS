@@ -10,7 +10,6 @@ local function wrap(text, limit) --from Kingdaroo
 		end
 		if space:find('\n') then
 			lines[#lines] = lines[#lines] .. word
-		       
 			space = space:gsub('\n', function()
 				table.insert(lines, '')
 				return ''
@@ -57,102 +56,101 @@ getfenv(1)=getfenv()~=getfenv(0)~~_G
 error('',1)~=error('',0)
 ]]
 rawset(_G,'loadfile',function( _sFile )
-  local file = fs.open( _sFile, "r" )
-  if file then
-    local func, err = loadstring( file.readAll(),_sFile)
-    file.close()
-    return func, err
-  end
-  return nil, "File not found"
+	local file = fs.open( _sFile, "r" )
+	if file then
+		local func, err = loadstring( file.readAll(),_sFile)
+		file.close()
+		return func, err
+	end
+	return nil, "File not found"
 end)
 local traceback=function(level,terr)
-  local terr=terr or {}
-  local passed={}
-  local err,ok=terr
-  local j=2+(level or 0)
-  repeat
-    j=j+1
-    passed[err]=true
-    ok,err=pcall(error,'',j)
-    if err:match('^[^:]+')=='bios' then break end
-    table.insert(terr,err)
-  until (passed[err])
- 
-  return terr
+	local terr=terr or {}
+	local passed={}
+	local err,ok=terr
+	local j=2+(level or 0)
+	repeat
+		j=j+1
+		passed[err]=true
+		ok,err=pcall(error,'',j)
+		if err:match('^[^:]+')=='bios' then break end
+		table.insert(terr,err)
+	until(passed[err])
+	return terr
 end
  
 local function classify(t,f)
-  local bins={}
-  local c
-  for i,v in ipairs(t) do
-    local fi,r=f(v)
-    if fi~=nil then
-      if c==nil or c.n~=fi then
+	local bins={}
+	local c
+	for i,v in ipairs(t) do
+		local fi,r=f(v)
+		if fi~=nil then
+			if c==nil or c.n~=fi then
+				table.insert(bins,c)
+				c={n=fi}
+			end
+			table.insert(c,r)
+		end
+	end
 	table.insert(bins,c)
-	c={n=fi}
-      end
-      table.insert(c,r)
-    end
-  end
-  table.insert(bins,c)
-  return bins
+	return bins
 end
 local function get_chunks(terr)
-  return classify(terr,function(v) return v:match('^([^:]+):(.*)') end)
+	return classify(terr,function(v) return v:match('^([^:]+):(.*)') end)
 end
  
 local function get_lines(terr)
-  return classify(terr,function(v) return v:match('^(%d+):(.*)') end)
+	return classify(terr,function(v) return v:match('^(%d+):(.*)') end)
 end
  
 local function put_lines(path,diameter,ts,l)
-  local ok,f=pcall(fs.open,path,'r')
-  if not ok or not f then table.insert(ts,'  (could not open file)')
-  else
-    for i=1,l-diameter-1 do
-      f.readLine()
-    end
-    for i=1,diameter do
-      table.insert(ts,'  '..f.readLine())
-    end
-    table.insert(ts,'->'..f.readLine())
-    for i=1,diameter do
-      local l=f.readLine()
-      if l then table.insert(ts,'  '..l)
-      else break end
-    end
-  end
+	local ok,f=pcall(fs.open,path,'r')
+	if not ok or not f then table.insert(ts,'	(could not open file)')
+	else
+		for i=1,l-diameter-1 do
+			f.readLine()
+		end
+		for i=1,diameter do
+			table.insert(ts,'	'..f.readLine())
+		end
+		table.insert(ts,'->'..f.readLine())
+		for i=1,diameter do
+			local l=f.readLine()
+			if l then table.insert(ts,'	'..l)
+			else break end
+		end
+	end
 end
  
 local function format_traceback(terr)
-  local ts={}
-  for i,v in ipairs(get_chunks(terr)) do
-    local name=v.n or '(no name)'
-    local path
-    if fs.exists(name) then
-      name,dir,path=fs.getName(name),name:match('^(.*)/') or '/',name
-      name=name..' ('..(dir or 'unknown')..')'
-    elseif false then
-      --shell has input string; modify to behave as file?
-    end
-    table.insert(ts,name)
-    for j,line in ipairs(get_lines(v)) do
-      table.insert(ts,' line '..(line.n or '(no line)')..', *'..(#line))
-      local n=line.n and tonumber(line.n) or 1
-      if path and n then
-	put_lines(path,1,ts,n)
-      end
-    end
-  end
-  return ts
+	local ts={}
+	for i,v in ipairs(get_chunks(terr)) do
+		local name=v.n or '(no name)'
+		local path
+		if fs.exists(name) then
+			name,dir,path=fs.getName(name),name:match('^(.*)/') or '/',name
+			name=name..' ('..(dir or 'unknown')..')'
+		elseif false then
+			--shell has input string; modify to behave as file?
+		end
+		table.insert(ts,name)
+		for j,line in ipairs(get_lines(v)) do
+			table.insert(ts,' line '..(line.n or '(no line)')..', *'..(#line))
+			local n=line.n and tonumber(line.n) or 1
+			if path and n then
+				put_lines(path,1,ts,n)
+			end
+		end
+	end
+	return ts
 end
  
 function debug.traceback(msg,level)
-  local level=level or 0
-  local ts=format_traceback(traceback(level+1,{}))
-  msg='['..(msg or 'debug.traceback')
-  table.insert(ts,1,msg)
-  return table.concat(ts,'\n')..'\n]'
+	local level=level or 0
+	local ts=format_traceback(traceback(level+1,{}))
+	msg='['..(msg or 'debug.traceback')
+	table.insert(ts,1,msg)
+	return table.concat(ts,'\n')..'\n]'
 end
  
 function debug.printTraceback(msg,level)
