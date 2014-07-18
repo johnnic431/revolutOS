@@ -9,6 +9,7 @@ local apisNeeded={
 }
 
 function init(this,inf)
+	Logger.log("Creating a new button");
 	new={};
 	new.info={x=0,y=0,sizeX=0,sizeY=0,bCol=0,tCol=0,text="",visible=false,onClick=function() end};
 	inf=inf or {};
