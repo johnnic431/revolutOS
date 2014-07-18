@@ -46,8 +46,8 @@ end
 
 function send(channel,rChannel,message,mID)
 	if not isInit then error(notInit) end
-	modem.transmit(channel,rChannel,textutils.serialize({content=message,senderID=os.getComputerID(),messageID=mID or "revolutOS:wirelessAPI"}));
-	Logger.log("Sent wireless message with content "..textutils.serialize({content=message,senderID=os.getComputerID(),messageID=mID or "revolutOS:wirelessAPI"}).." on channel "..tostring(channel));
+	modem.transmit(channel,rChannel,textutils.serialize({content=message,senderID=os.getComputerID(),chan=channel,rChan=rChannel,messageID=mID or "revolutOS:wirelessAPI"}));
+	Logger.log("Sent wireless message with content "..textutils.serialize({content=message,senderID=os.getComputerID(),chan=channel,rChan=rChannel,messageID=mID or "revolutOS:wirelessAPI"}));
 	return true;
 end
 
