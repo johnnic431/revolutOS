@@ -21,3 +21,12 @@ log=function(message)
 	f.write("["..nTime-sTime.."] "..message..ln);
 	f.close();
 end
+
+e=function(message)
+	nTime=os.time();
+	f=fs.open(file,"a");
+	f.write("\n\nBEGIN ERROR REPORT\n\n");
+	f.write("["..nTime-sTime.."] "..message..ln);
+	f.write("\nEND ERROR REPORT\n\n");
+	f.close();
+end
