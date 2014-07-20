@@ -33,7 +33,7 @@ end
 function addChild(self,child) --Child is a table with function 'draw' and string 'name'
 	if not child.name then error("Needs child.name for later removal"); end
 	if not child.draw then error("Needs child.draw for functionality"); end
-	self.components[#self.components+1]=child;
+	table.insert(self.components,child);
 end
 
 function removeChild(self,name)
