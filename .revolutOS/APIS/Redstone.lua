@@ -38,11 +38,11 @@ function init(this,name,info)
 end
 
 function addEventHandler(self,eHandler,typef)
-	Logger.log("Adding event handler that handles event type "..typef);
-	if typeof then
-		eventHandlers:insert({handler=eHandler,typeof=typef});
+	Logger.log("Adding event handler that handles event type "..typef or "all");
+	if typef then
+		table.insert(self.eventHandlers,{handler=eHandler,typeof=typef});
 	else
-		eventHandlers:insert({handler=eHandler,typeof="all"});
+		table.insert(self.eventHandlers,{handler=eHandler,typeof="all"});
 	end
 end
 
